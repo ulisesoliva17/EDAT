@@ -117,17 +117,20 @@ public class ArbolBin {
     
     
         private void auxClone(NodoArbol nodo1,NodoArbol nodo2) {
-        
+        //Entran dos nodo, un nodo raiz, y una copia de la raiz
         if (nodo1 != null && nodo2 != null) {
-            
+            //SI ambos son distintos de nulos, entonces:
             if (nodo1.getIzquierdo() != null) {
+                //Al nodo copia de la raiz, se le asigna a su hijo izquierdo(que se inicializo en el publico con null) 
+                // un nuevo nodo con el hijo izquierdo del nodo raiz original
                nodo2.setIzquierdo(new NodoArbol(nodo1.getIzquierdo().getElem(),null,null));
               }
             
              if (nodo1.getDerecho()!= null) {
                nodo2.setDerecho(new NodoArbol(nodo1.getDerecho().getElem(),null,null));
               }
-             
+             //Hace el llamado recursivo pero con los dos hijos izquierdo, del original y de la copia
+             //los cuales ya son distintos de nulos.
              auxClone(nodo1.getIzquierdo(),nodo2.getIzquierdo());
              auxClone(nodo1.getDerecho(),nodo2.getDerecho());
               
