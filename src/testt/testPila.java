@@ -1,7 +1,6 @@
 package testt;
 
 import lineales.estaticas.Pila;
-import lineales.estaticas.Pila;
 import java.util.Scanner;
 import lineales.estaticas.Pila;
 

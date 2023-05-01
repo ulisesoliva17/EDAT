@@ -47,14 +47,14 @@ public class Lista {
         //-------------------------------------------------------------------------------------------------------------------------------------------
         public int longitud(){
             Nodo aux= cabecera;
-            int contador=0;
+            int contador=1;
             while(aux!=null){
                 aux=aux.getEnlace();
-                contador=+1;
+                contador++;
             }
             return contador;
-
         }
+        
         //-------------------------------------------------------------------------------------------------------------------------------------------
         public void vaciar(){
             cabecera.setEnlace(null);
@@ -93,10 +93,65 @@ public class Lista {
         }
         return exito;
     }
+         //-------------------------------------------------------------------------------------------------------------------------------------------
+   public String toString(){
+        String retorno = "Lista Vacia";
+        //evaluamos que la lista no este vacia
+        if(this.cabecera != null){
+            retorno = "[";
+            Nodo aux = this.cabecera;
+            
+            while(aux != null){
+                retorno = retorno + aux.getInformacion().toString();
+                if(aux.getEnlace() != null){
+                    retorno += ",";
+                }
+                aux = aux.getEnlace();
+            }
+            
+            retorno += "]";
+        }
+        return retorno;
+    }     
     
        //-------------------------------------------------------------------------------------------------------------------------------------------
-    
-    
+        public Object recuperar(int pos){
+            Nodo puntero=cabecera;
+            Nodo aux;
+            Object resp= null;
+            int contador=0;
+            if(cabecera==null){
+                resp=null;
+            }else{
+                if(contador<pos && puntero.getEnlace()!=null){
+                    puntero= puntero.getEnlace();
+                    contador++;
+                }
+            }
+            if(contador==pos){
+                resp=puntero.getInformacion();
+            }
+            return resp;
+        }
+           //-------------------------------------------------------------------------------------------------------------------------------------------
+        public int localizar(Object elem){
+            Nodo puntero=cabecera;
+            Nodo aux;
+            int pos=-1;
+            int contador=1;
+            if(cabecera==null){
+                pos=-1;
+            }else{
+                    while(!elem.equals(puntero.getInformacion()) && puntero.getEnlace()!=null){
+                        puntero= puntero.getEnlace();
+                        contador++;
+                    }
+            }
+                if(elem.equals(puntero.getInformacion())){
+                    pos= contador;
+                }
+                return pos;
+        }
 }
     
 
