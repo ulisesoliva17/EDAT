@@ -1,5 +1,5 @@
-
 package jerarquicas;
+import lineales.dinamicas.Lista;
 
 public class ArbolBin {
  
@@ -8,7 +8,9 @@ public class ArbolBin {
     public ArbolBin() {
         this.raiz = null;
     }
-
+    
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+    
     public boolean insertar(Object elemNuevo, Object elemPadre, char lugar) {
         boolean exito = true;
         if (this.raiz == null) { //para cuando esta vacio asi hace que eso sea la raiz
@@ -30,6 +32,8 @@ public class ArbolBin {
         return exito;
     }
     
+  //-----------------------------------------------------------------------------------------------------------------------------------------------
+    
     public String toString() {
         String mensaje=" ";
         if(raiz==null){    
@@ -39,7 +43,9 @@ public class ArbolBin {
         }
         return mensaje;
     }
-
+    
+    //-----------------------------------------------------------------------------------------------------------------------------------------------
+    
     private String toStringAux(NodoArbol nodo) {
         String mensaje = "";
         if (nodo != null) {
@@ -65,6 +71,8 @@ public class ArbolBin {
         return mensaje;
     }
 
+    //-----------------------------------------------------------------------------------------------------------------------------------------------
+    
     //para obtener el nodo segun un elemento q busques
     private NodoArbol obtenerNodo(NodoArbol n, Object buscado) {
         // METODO PRIVADO que busca un elemento y devuelve el nodo que lo contiene. Si no se encuentra el buscado devueve null
@@ -82,6 +90,7 @@ public class ArbolBin {
         return resultado;
     }
     
+    //-----------------------------------------------------------------------------------------------------------------------------------------------
     
     public Object obtenerPadre(Object padre){
         Object resultado=null;
@@ -92,6 +101,8 @@ public class ArbolBin {
         }
         return resultado;
     }
+    
+    //-----------------------------------------------------------------------------------------------------------------------------------------------
     
     private Object obtenerPadre(Object elem, NodoArbol nodo ){
         Object padre=null;
@@ -115,6 +126,8 @@ public class ArbolBin {
     
     }
     
+    //-----------------------------------------------------------------------------------------------------------------------------------------------
+    
     
         private void auxClone(NodoArbol nodo1,NodoArbol nodo2) {
         //Entran dos nodo, un nodo raiz, y una copia de la raiz
@@ -137,15 +150,188 @@ public class ArbolBin {
             }
         }
         
-        
+//-----------------------------------------------------------------------------------------------------------------------------------------------
         public ArbolBin clone(){
         ArbolBin clon = new ArbolBin();
         if(raiz != null){
             clon.raiz = new NodoArbol(raiz.getElem(), null, null);
             auxClone(raiz, clon.raiz);
         }
-        
         return clon;
     }
-    
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+        public Lista listarPreOrder(){
+            Lista lis = new Lista();
+            listarPreOrdenAux(raiz,lis);
+            return lis;
+        }
+        private void listarPreOrdenAux(NodoArbol nodo,Lista lis){
+            
+            if(nodo!=null){
+             //Visita el elemento en el nodo
+            lis.insertar(nodo.getElem(),lis.longitud()+1);
+            
+            //Recorre a sus hijos en pre orden
+            listarPreOrdenAux(nodo.getIzquierdo(), lis);
+            listarPreOrdenAux(nodo.getDerecho(), lis);
+            }
+        }
+        //-----------------------------------------------------------------------------------------------------------------------------------------------
+        public Lista listarPosOrder(){
+            Lista lis = new Lista();
+            listarPosOrdenAux(raiz,lis);
+            return lis;
+        }
+        private void listarPosOrdenAux(NodoArbol nodo,Lista lis){
+            
+            //Recorre a sus hijos en pos orden
+            listarPreOrdenAux(nodo.getIzquierdo(), lis);
+            listarPreOrdenAux(nodo.getDerecho(), lis);
+            //Visita la raiz
+            lis.insertar(nodo.getElem(),lis.longitud()+1);
+        }
+         //-----------------------------------------------------------------------------------------------------------------------------------------------
+        public Lista listarInOrder(){
+            Lista lis = new Lista();
+            listarInOrdenAux(raiz,lis);
+            return lis;
+        }
+        private void listarInOrdenAux(NodoArbol nodo,Lista lis){
+            
+            //Recorre a sus hijos en pos orden
+            listarPreOrdenAux(nodo.getIzquierdo(), lis);
+                        //Visita la raiz
+            lis.insertar(nodo.getElem(),lis.longitud()+1);
+            
+            listarPreOrdenAux(nodo.getDerecho(), lis);
+        }
+        
+           //-----------------------------------------------------------------------------------------------------------------------------------------------
+        public int altura1 (){
+            int alt=0;
+            NodoArbol aux=raiz;
+            alt= alturaAux1(aux);
+            return alt;
+        }
+        
+        private int alturaAux1(NodoArbol nodo){
+            if (nodo == null) {
+                return -1; // si el nodo es nulo, la altura es -1
+            } else {
+                int alturaIzquierda = alturaAux1(nodo.getIzquierdo()); // altura del subárbol izquierdo
+                int alturaDerecha = alturaAux1(nodo.getDerecho()); // altura del subárbol derecho
+                return 1 + Math.max(alturaIzquierda, alturaDerecha); // altura del nodo actual es 1 más el máximo de las alturas de sus subárboles
+            }
+        }
+        
+        
+    //-----------------------------------------------------------------------------------------------------------------------------------------------    
+        public int altura2() {
+         return alturaAu2(raiz);
+         }
+
+    // FORMA 1 DE CALCULAR ALTURA
+        private int alturaAu2(NodoArbol nodo) {
+            if (nodo == null) {
+                // Si el nodo es nulo, entonces la altura es 0.
+                return 0;
+            } else {
+                // Calcula la altura de los subárboles izquierdo y derecho
+                int alturaIzquierda = alturaAu2(nodo.getIzquierdo());
+                int alturaDerecha = alturaAu2(nodo.getDerecho());
+
+                // La altura del árbol es el máximo entre las alturas de los subárboles más uno.
+                int alturaMaxima;
+                if(alturaIzquierda > alturaDerecha){
+                    alturaMaxima=alturaIzquierda;
+                }else{
+                    alturaMaxima=alturaDerecha;
+                }
+                return alturaMaxima + 1;
+            }
     }
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+
+
+        public int altura3() {
+            //Este modulo devuelve la altura del arbol que lo llama
+            int altura;
+            if (raiz==null) {
+                altura = 0;
+            } else {
+                altura = determinarAltura(raiz, 0, 0);
+            }
+            return altura+1;
+        }
+
+        private int determinarAltura(NodoArbol nodoAct, int nivelAct, int altMax) {
+            if (nodoAct.getIzquierdo()!= null) {
+                if (nivelAct + 1 > altMax) {
+                    altMax = nivelAct + 1;
+                }
+                altMax = determinarAltura(nodoAct.getIzquierdo(), nivelAct + 1, altMax);
+            }
+            if (nodoAct.getDerecho()!= null) {
+                if (nivelAct + 1 > altMax) {
+                    altMax = nivelAct + 1;
+                }
+                altMax = determinarAltura(nodoAct.getDerecho(), nivelAct + 1, altMax);
+            }
+            return altMax;
+        }
+        
+        public int nivel(Object buscado){
+            int nivel=-1;
+            return nivelAux(buscado, raiz, nivel);
+        }
+        private int nivelAux (Object buscado, NodoArbol nodo, int nivel){
+            int encontrado=-1;
+            if(nodo!=null){
+                if(nodo.getElem().equals(buscado)){
+                    encontrado= nivel+1;
+                }else if (nodo.getIzquierdo() == null && nodo.getDerecho() == null) {
+                // Si llegamos a una hoja encontrado se asigna con -1 y se retorna
+                encontrado = -1;
+                
+                }else if (nodo.getIzquierdo() != null) {
+                encontrado = nivelAux(buscado,nodo.getIzquierdo(), nivel + 1);
+            }
+
+            if (nodo.getDerecho() != null && encontrado == -1) {
+                encontrado = nivelAux(buscado,nodo.getDerecho(), nivel + 1);
+            }
+                 
+            }
+            return encontrado;
+
+        }
+        public boolean pertenece(Object buscado){
+            boolean resp=false;
+            return perteneceAux(raiz, buscado);
+        }
+        private boolean perteneceAux(NodoArbol nodo, Object buscado){
+            boolean rta=false;
+            if(nodo!=null){
+                if(nodo.getElem().equals(buscado)){
+                    rta=true;
+                }else{
+                    if(nodo.getIzquierdo()!=null  && (buscado.equals(nodo.getIzquierdo().getElem()))){
+                        rta=true;
+                    }
+                    if(nodo.getDerecho()!=null  && (buscado.equals(nodo.getDerecho().getElem()))){
+                        rta=true;
+                    }
+                }
+                if(rta==false){
+                    rta=perteneceAux(nodo.getIzquierdo(),buscado);
+                }
+                if(rta==false){
+                    rta=perteneceAux(nodo.getDerecho(),buscado);
+                }
+            }
+            
+            return rta;
+        }
+        
+        
+   } //FIN

@@ -1,5 +1,6 @@
 
 package testt;
+import lineales.dinamicas.Lista;
 
  // @author ulise
 
@@ -22,9 +23,15 @@ public class TestArbol {
         arbol.insertar(7, 3, 'i');
         arbol.insertar(8, 3, 'd');
         arbol.insertar(9, 8, 'i');
+        arbol.insertar(10, 9, 'i');
         System.out.println(arbol.toString());
-       System.out.println(arbol.obtenerPadre(9));
-        System.out.println(arbol.clone().toString());
+        //System.out.println(arbol.obtenerPadre(8));
+       // System.out.println(arbol.clone().toString());
+        //Lista listaPre = arbol.listarInOrder();
+        //System.out.println(listaPre.toString());
+        //System.out.println(arbol.altura1());
+        //System.out.println(arbol.nivel(89));
+        System.out.println(arbol.pertenece(10));
     }
 
 }

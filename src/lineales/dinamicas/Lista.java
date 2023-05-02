@@ -47,7 +47,7 @@ public class Lista {
         //-------------------------------------------------------------------------------------------------------------------------------------------
         public int longitud(){
             Nodo aux= cabecera;
-            int contador=1;
+            int contador=0;
             while(aux!=null){
                 aux=aux.getEnlace();
                 contador++;
@@ -115,6 +115,7 @@ public class Lista {
     }     
     
        //-------------------------------------------------------------------------------------------------------------------------------------------
+   
         public Object recuperar(int pos){
             Nodo puntero=cabecera;
             Nodo aux;
