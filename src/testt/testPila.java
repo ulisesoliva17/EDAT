@@ -1,6 +1,5 @@
 package testt;
 
-import lineales.estaticas.Pila;
 import java.util.Scanner;
 import lineales.estaticas.Pila;
 
@@ -13,9 +12,14 @@ public class testPila {
         pila.apilar(5);
         pila.apilar(3);
         pila.apilar(6);
+        pila.apilar(2);
+        pila.apilar(3);
+        pila.apilar(4);
+        pila.apilar(5);
+        pila.apilar(9);
+        pila.apilar(78);
         System.out.println(pila.toString());
-        pila.vaciar();
-        System.out.println(pila.toString());
+        System.out.println();
     }
 }
 

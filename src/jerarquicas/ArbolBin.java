@@ -125,6 +125,16 @@ public class ArbolBin {
        return padre;  
     
     }
+            
+//-----------------------------------------------------------------------------------------------------------------------------------------------
+        public ArbolBin clone(){
+        ArbolBin clon = new ArbolBin();
+        if(raiz != null){
+            clon.raiz = new NodoArbol(raiz.getElem(), null, null);
+            auxClone(raiz, clon.raiz);
+        }
+        return clon;
+    }
     
     //-----------------------------------------------------------------------------------------------------------------------------------------------
     
@@ -149,16 +159,39 @@ public class ArbolBin {
               
             }
         }
-        
-//-----------------------------------------------------------------------------------------------------------------------------------------------
-        public ArbolBin clone(){
+          //-----------------------------------------------------------------------------------------------------------------------------------------------
+    
+    
+        private void auxCloneInvertido(NodoArbol nodo1,NodoArbol nodo2) {
+        //Entran dos nodo, un nodo raiz, y una copia de la raiz
+        if (nodo1 != null && nodo2 != null) {
+             //SI ambos son distintos de nulos, entonces:
+            if (nodo1.getIzquierdo() != null) {
+                //Al nodo copia de la raiz, se le asigna a su hijo izquierdo(que se inicializo en el publico con null) 
+                // un nuevo nodo con el hijo izquierdo del nodo raiz original
+               nodo2.setIzquierdo(new NodoArbol(nodo1.getIzquierdo().getElem(),null,null));
+              }
+            
+             if (nodo1.getDerecho()!= null) {
+               nodo2.setDerecho(new NodoArbol(nodo1.getDerecho().getElem(),null,null));
+              }
+             //Hace el llamado recursivo pero con los dos hijos izquierdo, del original y de la copia
+             //los cuales ya son distintos de nulos.
+             auxClone(nodo1.getIzquierdo(),nodo2.getIzquierdo());
+             auxClone(nodo1.getDerecho(),nodo2.getDerecho());
+              
+            }
+        }
+
+        //-----------------------------------------------------------------------------------------------------------------------------------------------
+        public ArbolBin cloneInvertido(){
         ArbolBin clon = new ArbolBin();
         if(raiz != null){
             clon.raiz = new NodoArbol(raiz.getElem(), null, null);
-            auxClone(raiz, clon.raiz);
+            auxCloneInvertido(raiz, clon.raiz);
         }
         return clon;
-    }
+        }
 //-----------------------------------------------------------------------------------------------------------------------------------------------
         public Lista listarPreOrder(){
             Lista lis = new Lista();
@@ -223,8 +256,6 @@ public class ArbolBin {
                 return 1 + Math.max(alturaIzquierda, alturaDerecha); // altura del nodo actual es 1 más el máximo de las alturas de sus subárboles
             }
         }
-        
-        
     //-----------------------------------------------------------------------------------------------------------------------------------------------    
         public int altura2() {
          return alturaAu2(raiz);
@@ -279,11 +310,13 @@ public class ArbolBin {
             }
             return altMax;
         }
+        //-----------------------------------------------------------------------------------------------------------------------------------------------
         
         public int nivel(Object buscado){
             int nivel=-1;
             return nivelAux(buscado, raiz, nivel);
         }
+        
         private int nivelAux (Object buscado, NodoArbol nodo, int nivel){
             int encontrado=-1;
             if(nodo!=null){

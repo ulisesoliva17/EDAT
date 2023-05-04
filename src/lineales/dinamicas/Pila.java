@@ -1,5 +1,4 @@
 package lineales.dinamicas;
-import javax.swing.JOptionPane;
 import lineales.dinamicas.Nodo;
     public class Pila {
  
@@ -32,11 +31,10 @@ import lineales.dinamicas.Nodo;
     //desapila el ultimo elemento de la pila
     public boolean desapilar(){
         boolean respuesta=true;
-        Nodo aux;
-    
+        
         if(tope!=null){
-            aux=tope.getEnlace();
-            tope=aux;
+         //A tope le asignamos el anteultimo elemennto. Sin romper nada, solo borrando el ultimo.
+            tope=tope.getEnlace();
         }else{
             respuesta=false;
         }
@@ -51,39 +49,55 @@ import lineales.dinamicas.Nodo;
     public int tamanioPila(){
         return tamanio;
     }
+    
     //Vaciar totalmente la pila
     public void vaciarTotalPila(){
-        //while(!esVacia()){
-         //    desapilar();
-      //  }
       tope = null;
       //asignando nulo al tope, rompe con el enlace y con la informacion que tiene el ultimo nodo, por ende, queda vacia la pila
     }
     
     //Mostrar el contenido de la pila
-    public void mostrarPila(){
-        String lista = " ";
-        Nodo recorrido = tope;
-        while(recorrido!=null){
-            lista += recorrido.informacion+"\n";
-            recorrido = recorrido.enlace;
+    public String toString(){
+        String salida = " ";
+        Nodo aux = tope;
+        while(aux!=null){
+            salida = salida+"\n" + aux.getInformacion().toString();
+            aux = aux.getEnlace();
+        }
+        return salida;
     }
-        JOptionPane.showMessageDialog(null, lista);
-        lista = "";
-    }
+    
     //Clona la pila
     public Pila clonar(){
-        Pila clonada = new Pila ();
+        Pila clon = new Pila ();
         Nodo aux = tope;
         while (aux != null){
-            clonada.tope = new Nodo (tope.getInformacion(), (Nodo) tope.getEnlace());
-            aux = (Nodo) aux.getEnlace();
+            clon.tope = new Nodo (tope.getInformacion(), tope.getEnlace());
+            aux = aux.getEnlace();
         }
-        return clonada;
+        return clon;
     }
+//    Inicio del método clonar()
+    //Ejemplo con esta pila:
+//tope = 8 -> 7 -> 3 -> null
+//Creación del objeto clon de la clase Pila
+//Creación del objeto aux de la clase Nodo y se le asigna la referencia al nodo en el tope de la pila original (nodo con valor 8)
+//Comienzo del bucle while (aux != null)
+//    Creación de un nuevo objeto Nodo con la información y enlace del nodo en el tope de la pila original (nodo con valor 8)
+//    Asignación del nuevo nodo creado como el nuevo tope de la pila clonada (clon.tope)
+//    Actualización de aux con el enlace al siguiente nodo en la pila original (nodo con valor 7)
+//    Comienzo de la siguiente iteración del bucle while (aux != null)
+//        Creación de un nuevo objeto Nodo con la información y enlace del nodo en el tope de la pila original (nodo con valor 7)
+//        Asignación del nuevo nodo creado como el nuevo tope de la pila clonada (clon.tope)
+//        Actualización de aux con el enlace al siguiente nodo en la pila original (nodo con valor 3)
+//        Comienzo de la siguiente iteración del bucle while (aux != null)
+//            Creación de un nuevo objeto Nodo con la información y enlace del nodo en el tope de la pila original (nodo con valor 3)
+//            Asignación del nuevo nodo creado como el nuevo tope de la pila clonada (clon.tope)
+//            Actualización de aux con el enlace al siguiente nodo en la pila original (null)
+//            Fin del bucle while (aux == null)
+//Fin del método clonar()
+//Retorno del objeto clon
 
-//  if(this.tope != null){
- //      nuevaPila.setElem(this.tope.getElem());
     }
 
 

@@ -95,13 +95,13 @@ import lineales.dinamicas.Nodo;
          //----------------------------------------------------------------------------------------------------------------------------------------
         
         public String toString() {
-               String cadena = "[|";
+               String cadena = "";
                Nodo temp = this.frente;
                while (temp != null) {
-                   cadena = cadena + temp.getInformacion()+ "|";
+                   cadena = cadena + temp.getInformacion();
                    temp = temp.getEnlace();
                }
-               cadena = cadena + "]";
+               cadena = cadena;
                return cadena;
            }
         
@@ -125,6 +125,45 @@ import lineales.dinamicas.Nodo;
         return colaClon;
     }
         //----------------------------------------------------------------------------------------------------------------------------------------
+       public boolean verificarBalanceo(Cola q){
+           Pila p1= new Pila();
+           Nodo puntero = q.frente;
+           boolean rta=false;
+           
+           while(puntero!=null){
+               if(puntero.getInformacion().equals("{") ||puntero.getInformacion().equals("[")||puntero.getInformacion().equals("(") ){
+                   p1.apilar(puntero.getInformacion());
+               }
+               
+               if(puntero.getInformacion().equals("}")){
+                   if(p1.obtenerTope().equals("{")){
+                       p1.desapilar();
+                   }
+               }
+               
+               if(puntero.getInformacion().equals("]")){
+                   if(p1.obtenerTope().equals("[")){
+                       p1.desapilar();
+                   }
+               }
+               
+               if(puntero.getInformacion().equals(")")){
+                   if(p1.obtenerTope().equals("(")){
+                       p1.desapilar();
+                   }
+               }
+               if(puntero.getInformacion().equals(null)){
+                   rta=false;
+               }
+               
+              puntero = puntero.getEnlace();
+                  
+           }
+           if(p1.esVacia()){
+               rta=true;
+           }
+           return rta;
+       }
 }
 
     

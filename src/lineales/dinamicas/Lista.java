@@ -153,7 +153,237 @@ public class Lista {
                 }
                 return pos;
         }
+        
+         //-------------------------------------------------------------------------------------------------------------------------------------------
+        
+//        public Lista obtenerMultiplo(int num,Lista listaActual){
+//            Lista q = listaActual;
+//            Lista retorno= new Lista();
+//            Nodo aux= listaActual.cabecera;
+//            int contador1=1, contador2=1;
+//            if(q.cabecera!=null){
+//                while(aux!=null){
+//                    if(contador2 % num==0){
+//                        Nodo nuevo = new Nodo(aux.getInformacion(),aux.getEnlace());
+//                        retorno.insertar(nuevo.getInformacion(), contador1);
+//                        contador1++;
+//                    }
+//                    aux=aux.getEnlace();
+//                    contador2++;
+//                }
+//            }
+//            return retorno;
+//        }
+        
+         //-------------------------------------------------------------------------------------------------------------------------------------------
+        
+//        public Lista obtenerMultiplo(int num,Lista listaActual){
+//            Lista q = listaActual;
+//            Lista retorno= new Lista();
+//            Nodo aux= listaActual.cabecera;
+//            Nodo aux2=null;
+//            int contador1=1, contador2=1;
+//            if(q.cabecera!=null){
+//                while(aux!=null){
+//                    if(contador2 % num==0){
+//                         Nodo nuevo = new Nodo(aux.getInformacion(),null);
+//                        if(retorno.cabecera==null){
+//                            retorno.cabecera= nuevo;
+//                            aux2= retorno.cabecera;
+//                        }else{
+//                            aux2.setEnlace(nuevo);
+//                            aux2=aux2.getEnlace();
+//                        }
+//                        contador1++;
+//                    }
+//                    aux=aux.getEnlace();
+//                    contador2++;
+//                    
+//                }
+//            }
+//            return retorno;
+//        }
+         //-------------------------------------------------------------------------------------------------------------------------------------------
+            // DEBEMOS DEVOLVER UNA NUEVA LISTA. POR ESO CREAMOS DENTRO DEL METODO UNA NUEVA LISTA
+            private Lista obtenerMultiplosAux(int num) {
+                Lista retorno = new Lista();
+                Nodo aux = cabecera;
+                Nodo aux2 = null;
+                int contador1 = 1, contador2 = 1;
+                if (cabecera != null) {
+                    while (aux != null) {
+                        if (contador2 % num == 0) {
+                            Nodo nuevo = new Nodo(aux.getInformacion(), null);
+                            if (retorno.cabecera == null) {
+                                retorno.cabecera = nuevo;
+                                aux2 = retorno.cabecera;
+                            } else {
+                                aux2.setEnlace(nuevo);
+                                aux2 = aux2.getEnlace();
+                            }
+                            contador1++;
+                        }
+                        aux = aux.getEnlace();
+                        contador2++;
+                    }
+                }
+                return retorno;
+            }
+
+            public Lista obtenerMultiplos(int num) {
+                return obtenerMultiplosAux(num);
+                
+            }
+
+    // Resto de operaciones del TDA Lista
+        
+
+        
+         //-------------------------------------------------------------------------------------------------------------------------------------------
+//        public Lista eliminarApariciones (Object x, Lista listaActual){
+//            Lista q = listaActual;
+//            Nodo puntero= q.cabecera;
+//            int contador1=1;
+//            while(puntero !=null){
+//               if (puntero.getInformacion().equals(x)) {
+//                    q.eliminar(contador1);
+//                    puntero = q.cabecera;
+//                    contador1 = 1;
+//                } else {
+//                    contador1++;
+//                    puntero = puntero.getEnlace();
+//                }
+//            }
+//            return q;
+//        }
+     //-------------------------------------------------------------------------------------------------------------------------------------------
+  
+                //DEVUELVE VOID PORQUE SOLO MODIFICO LA LISTA DEL TDA.
+            public void eliminarApariciones(Object x) {
+                cabecera = eliminarAparicionesAux(x, cabecera);
+            }
+                //DEBEMOS MODIFICAR LA LISTA DEL TDA, POR ESO NO DEVOLVEMOS UNA NUEVA LISTA, SOLO
+            //DEVOLVEMOS LA CABECERA MODIFICADA
+            private Nodo eliminarAparicionesAux(Object x, Nodo cabe) {
+                Nodo aux = cabe;
+                Nodo aux2 = null;
+                int contadorEliminados = 0;
+                while (aux != null) {
+                    if (aux.getInformacion().equals(x)) {
+                        contadorEliminados++;
+                        if (contadorEliminados == 1) {
+                            cabe = cabe.getEnlace();
+                            aux2 = cabe;
+                        } else {
+                            aux2.setEnlace(aux.getEnlace());
+                        }
+                    } else {
+                        aux2 = aux;
+                    }
+                    aux = aux.getEnlace();
+                }
+                return cabe;
+            }
+             //-------------------------------------------------------------------------------------------------------------------------------------------
+//            public void agregarElem(Object k, int x){
+//                cabecera=agregarElemAux(k, x);
+//            }
+//            
+//             //-------------------------------------------------------------------------------------------------------------------------------------------
+//            private Nodo agregarElemAux(Object k, int x){
+//                Nodo aux1=cabecera;
+//                Nodo nuevo = new Nodo(k,null);
+//                int cont1=1;
+//                int cont2=1;
+//                while(aux1!=null){
+//                    if(cont1==1){
+//                        nuevo.setEnlace(cabecera);
+//                        cabecera=nuevo;
+//                        aux1=cabecera;
+//                        cont1+=x-1;
+//                       // cont1++;
+//                    }else{
+//                        cont2++;
+//                        if(cont2%x==0){
+//                            nuevo.setEnlace(aux1.getEnlace());
+//                            aux1.setEnlace(nuevo);
+//                            aux1=aux1.getEnlace();
+//                        }
+//                        aux1=aux1.getEnlace();
+//                    }
+//                    cont1++;
+//                }
+//                return cabecera;
+//            }
+                      public void agregarElemento(Object nuevo, int x) {
+    Nodo actual = cabecera;
+    int contador = 0;
+
+    // Agregar el elemento nuevo en la posición 1
+    Nodo nodoNuevo = new Nodo(nuevo);
+    nodoNuevo.setEnlace(actual);
+    cabecera = nodoNuevo;
+    
+    actual = actual.getEnlace();
+    contador++;
+
+    // Recorrer la lista y agregar el elemento nuevo cada x+1 posiciones
+    while (actual != null) {
+        if ((contador+1) % (x+1) == 0) {
+            Nodo nodoNuevo2 = new Nodo(nuevo);
+            nodoNuevo2.setEnlace(actual);
+            actual = nodoNuevo2;
+        }
+        
+        contador++;
+        actual = actual.getEnlace();
+    }
 }
+
+
+
+
+
+
+
+
+
+            
+            
+            
+            
+            
+            
+            
+            
+        }
+
+
+                     //-------------------------------------------------------------------------------------------------------------------------------------------
+//        private Lista eliminarAparicionesAux (Object x, Lista listaActual){
+//            Lista q = listaActual;
+//            Nodo puntero= q.cabecera;
+//            Nodo aux2=null;
+//            int contador1=1;
+//            int contadorEliminados=0;
+//             while (puntero != null) {
+//                    if (puntero.getInformacion().equals(x)) {
+//                                contadorEliminados++;
+//                                if (contadorEliminados == 1) {
+//                                    q.cabecera = q.cabecera.getEnlace();
+//                                    aux2 = q.cabecera;
+//                                } else {
+//                                    aux2.setEnlace(aux2.getEnlace().getEnlace());
+//                                }
+//                        } else {
+//                                aux2 = puntero;
+//                        }
+//                                puntero = puntero.getEnlace();
+//                }
+//            return q;
+//        }
+     //-------------------------------------------------------------------------------------------------------------------------------------------
+
     
 
 
