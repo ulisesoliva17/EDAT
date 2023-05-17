@@ -51,7 +51,7 @@ import lineales.dinamicas.Nodo;
     }
     
     //Vaciar totalmente la pila
-    public void vaciarTotalPila(){
+    public void vaciar(){
       tope = null;
       //asignando nulo al tope, rompe con el enlace y con la informacion que tiene el ultimo nodo, por ende, queda vacia la pila
     }

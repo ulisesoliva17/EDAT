@@ -33,6 +33,35 @@ public class ArbolBin {
     }
     
   //-----------------------------------------------------------------------------------------------------------------------------------------------
+    public boolean equals(ArbolBin arb1){
+        return equalsAux(raiz,arb1.raiz);
+    }
+        private boolean equalsAux(NodoArbol nodo1, NodoArbol nodo2){
+            boolean rtaa=false;
+            if(nodo1!=null && nodo2!=null){
+                if((nodo1.getIzquierdo()!=null && nodo2.getIzquierdo()!=null && nodo1.getIzquierdo().getElem().equals(nodo2.getIzquierdo().getElem())) || (nodo1.getIzquierdo()!=null && nodo2.getIzquierdo()!=null && nodo1.getIzquierdo().getElem().equals(nodo2.getIzquierdo().getElem()))){
+                        rtaa=true;
+                }
+                rtaa=equalsAux(nodo1.getIzquierdo(), nodo2.getIzquierdo());
+                rtaa=equalsAux(nodo1.getDerecho(), nodo2.getDerecho());
+            }
+            return rtaa;
+        }
+        
+        
+//        private boolean equalsAux(NodoArbol nodo1, NodoArbol nodo2){
+//        boolean rta=false;
+//        if(nodo1!= null && nodo2!=null){
+//            if(nodo1.getElem().equals(nodo2.getElem())){
+//                rta=true;
+//            }
+//            rta= equalsAux(nodo1.getIzquierdo(), nodo2.getIzquierdo());
+//            rta=equalsAux(nodo1.getDerecho(), nodo2.getDerecho());
+//            
+//        }
+//        return rta;
+//    }
+      //-----------------------------------------------------------------------------------------------------------------------------------------------
     
     public String toString() {
         String mensaje=" ";
@@ -365,6 +394,38 @@ public class ArbolBin {
             
             return rta;
         }
+          public boolean verificarPatron(Lista list) {
+        boolean patronHallado = false;
+        if (raiz != null) {
+            patronHallado = patronAux(list, 1, raiz);
+        }
+        return patronHallado;
+    }
+
+    private boolean patronAux(Lista list, int posList, NodoArbol nodo) {
+        boolean hallado = false;
+        if (nodo != null) {
+
+            if (nodo.getElem().equals(list.recuperar(posList))) {
+                if (nodo.getIzquierdo()== null && nodo.getDerecho()== null && posList == list.longitud()) {
+                    hallado = true;
+                } else {
+                    posList++;
+                    hallado = patronAux(list, posList, nodo.getIzquierdo());
+                    if (!hallado) {
+                        hallado = patronAux(list, posList, nodo.getDerecho());
+                    }
+                }
+            } else {
+                posList = 1;
+                hallado = patronAux(list, posList, nodo.getIzquierdo());
+                if (!hallado) {
+                    hallado = patronAux(list, posList, nodo.getDerecho());
+                }
+            }
+        }
+        return hallado;
+    }
         
         
    } //FIN

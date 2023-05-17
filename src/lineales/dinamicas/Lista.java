@@ -43,6 +43,8 @@ public class Lista {
         }
         return exito;
     }
+
+
     
         //-------------------------------------------------------------------------------------------------------------------------------------------
         public int longitud(){
@@ -209,10 +211,10 @@ public class Lista {
                 Lista retorno = new Lista();
                 Nodo aux = cabecera;
                 Nodo aux2 = null;
-                int contador1 = 1, contador2 = 1;
+                int contador = 1;
                 if (cabecera != null) {
                     while (aux != null) {
-                        if (contador2 % num == 0) {
+                        if (contador % num == 0) {
                             Nodo nuevo = new Nodo(aux.getInformacion(), null);
                             if (retorno.cabecera == null) {
                                 retorno.cabecera = nuevo;
@@ -221,10 +223,9 @@ public class Lista {
                                 aux2.setEnlace(nuevo);
                                 aux2 = aux2.getEnlace();
                             }
-                            contador1++;
                         }
                         aux = aux.getEnlace();
-                        contador2++;
+                        contador++;
                     }
                 }
                 return retorno;
@@ -339,11 +340,6 @@ public class Lista {
         actual = actual.getEnlace();
     }
 }
-
-
-
-
-
 
 
 
