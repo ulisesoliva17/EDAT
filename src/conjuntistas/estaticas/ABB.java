@@ -1,5 +1,6 @@
 package conjuntistas.estaticas;
 import jerarquicas.NodoArbol;
+import lineales.dinamicas.Lista;
 
 /**
  *
@@ -154,5 +155,19 @@ public class ABB {
         return raiz==null;
     }
      //-----------------------------------------------------------------------------------------------------------------------------------------------
-    
+        public Lista listar(){
+            Lista lis = new Lista();
+            listarAux(raiz,lis);
+            return lis;
+        }
+        private void listarAux(NodoArbol nodo,Lista lis){
+            if(nodo!=null){
+            //Recorre a sus hijos en in orden
+            listarAux(nodo.getIzquierdo(), lis);
+                        //Visita la raiz
+            lis.insertar(nodo.getElem(),lis.longitud()+1);
+            
+            listarAux(nodo.getDerecho(), lis);
+            }
+        }
 }

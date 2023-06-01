@@ -1,5 +1,6 @@
 package testt;
 import conjuntistas.estaticas.ABB;
+import lineales.dinamicas.Lista;
 
 /**
  *
@@ -18,5 +19,8 @@ public class testABB {
         System.out.println(arbol.toString());
         System.out.println(arbol.minimoElem());
         System.out.println(arbol.maximoElem());
+       Lista lis = new Lista();
+       lis = arbol.listar();
+        System.out.println(lis.toString());
     }
 }
