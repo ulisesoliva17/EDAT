@@ -16,11 +16,26 @@ public class testABB {
         arbol.insertar(7);
         arbol.insertar(15);
         arbol.insertar(25);
+         arbol.insertar(2);
+         System.out.println(arbol.toString());
+        arbol.eliminarMinimo();
         System.out.println(arbol.toString());
-        System.out.println(arbol.minimoElem());
-        System.out.println(arbol.maximoElem());
-       Lista lis = new Lista();
-       lis = arbol.listar();
-        System.out.println(lis.toString());
+        Lista lisss = new Lista();
+        lisss=arbol.listarMayorIgual(5);
+        System.out.println(lisss.toString());
+//         ABB arbol2 = new ABB();
+//         arbol2= arbol.clonarParteInvertida(5);
+//         System.out.println(arbol2.toString());
+        
+//        System.out.println(arbol.toString());
+//        System.out.println(arbol.minimoElem());
+//        System.out.println(arbol.maximoElem());
+//       Lista lis = new Lista();
+//       //lis = arbol.listar();
+//        //System.out.println(lis.toString());
+//        //arbol.eliminar(20);
+//        //System.out.println(arbol.toString());
+//        arbol.eliminarMinimo();
+//        System.out.println(arbol.toString());
     }
 }

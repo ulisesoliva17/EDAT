@@ -118,24 +118,23 @@ public class Lista {
     
        //-------------------------------------------------------------------------------------------------------------------------------------------
    
-        public Object recuperar(int pos){
-            Nodo puntero=cabecera;
-            Nodo aux;
-            Object resp= null;
-            int contador=0;
-            if(cabecera==null){
-                resp=null;
-            }else{
-                if(contador<pos && puntero.getEnlace()!=null){
-                    puntero= puntero.getEnlace();
-                    contador++;
-                }
+      public Object recuperar(int pos){
+        Object devolver=null;
+        Nodo aux = this.cabecera;
+        if((pos<0)||(pos>longitud())){
+            devolver=null;
+        }else{
+            int i=1;
+            while ((i!=pos)&&(aux!=null)){
+                aux=aux.getEnlace();
+                i++;
+            }//Me muevo hasta aux=pos
+            if(aux!=null){
+                devolver=aux.getInformacion();
             }
-            if(contador==pos){
-                resp=puntero.getInformacion();
-            }
-            return resp;
         }
+        return devolver;
+    }
            //-------------------------------------------------------------------------------------------------------------------------------------------
         public int localizar(Object elem){
             Nodo puntero=cabecera;

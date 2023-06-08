@@ -13,29 +13,31 @@ public class ArbolGen {
         raiz=null;
     }
       //-----------------------------------------------------------------------------------------------------------------------------
-    public boolean insertar(Object elemNuevo, Object elemPadre) {
-        // METODO QUE BUSCA UN ELEMENTO PADRE Y AGREGA UN elemNuevo COMO HIJO
-        boolean exito = false;
-        NodoGen encontrado, nuevo;
-        if (raiz==null) {
-            this.raiz = new NodoGen(elemNuevo, null, null); // SI EL ARBOL ESTA VACIO LO INGRESA EN LA RAIZ
-            exito = true;
+ public boolean insertar(Object elemNuevo, Object elemPadre) {
+        boolean exito = true;
+        if (this.raiz == null) {
+            this.raiz = new NodoGen(elemNuevo, null, null);
         } else {
-            encontrado = buscarNodo(this.raiz, elemPadre); // SI EL ARBOL TIENE ALGUN ELEMENTO, BUSCA EL elemPadre
-            if (encontrado != null) { // SI ENCUENTRA EL elemPadre
-                if (encontrado.getHijoIzquierdo() != null) { // Y TIENE HIJOS
-                    nuevo = new NodoGen(elemNuevo, null, encontrado.getHijoIzquierdo());
-                    encontrado.setHijoIzquierdo(nuevo); // INSERTA EL elemNueo como primer hijo del elemPadre
-                    exito = true;
+            NodoGen nPadre = buscarNodo(this.raiz, elemPadre);
+            if (nPadre != null) {
+
+                if (nPadre.getHijoIzquierdo() == null) {
+                    nPadre.setHijoIzquierdo(new NodoGen(elemNuevo, null, null));
                 } else {
-                    encontrado.setHijoIzquierdo(new NodoGen(elemNuevo, null, null));
-                    exito = true;
+                    NodoGen hijo = nPadre.getHijoIzquierdo();
+
+                    while (hijo.getHermanoDerecho() != null) {
+                        hijo = hijo.getHermanoDerecho();
+                    }
+                    hijo.setHermanoDerecho(new NodoGen(elemNuevo, null, null));
                 }
+            } else {
+                exito = false;
             }
         }
         return exito;
     }
-  //-----------------------------------------------------------------------------------------------------------------------------
+ //---------------------------------------------------------------------------------------------------------------------------------
     private NodoGen buscarNodo(NodoGen nodo, Object buscado) {
         // METODO QUE BUSCA UN DETERMINADO ELEMENTO EN EL ARBOL GENERICO
         NodoGen encontrado = null;
@@ -88,74 +90,66 @@ public class ArbolGen {
             return salida;
         }
 
-        private void listarPreordenAux(NodoGen n, Lista ls) {
-            if (n != null) {
-                //visito a n
-                ls.insertar(n.getElem(), ls.longitud() + 1);
-                //lama con el primer hijo
-                if (n.getHijoIzquierdo() != null) {
-                    listarPreordenAux(n.getHijoIzquierdo(), ls);
-                }
-                //llamados recursivos con los otros hijos de n
-                if (n.getHijoIzquierdo() != null) {
-                    NodoGen hijo = n.getHijoIzquierdo().getHermanoDerecho();
-                    while (hijo != null) {
-                        listarPreordenAux(hijo, ls);
-                        hijo = hijo.getHermanoDerecho();
-                    }
-                }
-            }
-        }
-       //----------------------------------------------------------------------------------------------------------------------------- 
-        public Lista listarPosorden() {
-        Lista salida = new Lista();
-        listarPosordenAux(this.raiz, salida);
-        return salida;
-        }
-        
-        private void listarPosordenAux(NodoGen n, Lista ls) {
-        if (n != null) {
-            //visita del primer hijo
-            if (n.getHijoIzquierdo() != null) {
-                listarPosordenAux(n.getHijoIzquierdo(), ls);
-            }
-            //llamados recursivos con los otros hijos de n
+       private void listarPreordenAux(NodoGen nodo, Lista lis) {
+        if (nodo != null) {
+            // VISTA DEL NODO nodo
+            lis.insertar(nodo.getElem(), lis.longitud() + 1);
 
-            if (n.getHijoIzquierdo() != null) {
-                NodoGen hijo = n.getHijoIzquierdo().getHermanoDerecho();
+            // LLAMADOS RECURSIVOS CON LOS OTROS HIJOS DE nodo
+            if (nodo.getHijoIzquierdo() != null) {
+                NodoGen hijo = nodo.getHijoIzquierdo();
                 while (hijo != null) {
-                    listarPosordenAux(hijo, ls);
+                    listarPreordenAux(hijo, lis);
+                    hijo = hijo.getHermanoDerecho();
+                }
+            }
+        }
+    }
+       //----------------------------------------------------------------------------------------------------------------------------- 
+      public Lista listarPosorden(){
+        Lista salida = new Lista();
+        listarPosordenAux(this.raiz,salida);
+        return salida;
+    }
+  private void listarPosordenAux(NodoGen nodo, Lista lis) {
+        if (nodo != null) {
+
+            // LLAMADOS RECURSIVOS CON LOS OTROS HIJOS DE nodo
+            if (nodo.getHijoIzquierdo() != null) {
+                NodoGen hijo = nodo.getHijoIzquierdo();
+                while (hijo != null) {
+                    listarPosordenAux(hijo, lis);
                     hijo = hijo.getHermanoDerecho();
                 }
             }
 
-            //visita del nodo n
-            ls.insertar(n.getElem(), ls.longitud() + 1);
-            }
+            // VISTA DEL NODO nodo
+            lis.insertar(nodo.getElem(), lis.longitud() + 1);
         }
+    }
         //-----------------------------------------------------------------------------------------------------------------------------
-                public Lista listarPorNiveles() {
+               public Lista listarPorNiveles() {
                Lista lis = new Lista();
                Cola q = new Cola();
                NodoGen nodoActual;
                q.poner(this.raiz);
                if (!this.esVacio()) {
                    while (!q.esVacia()) {
-                       nodoActual = (NodoGen) q.obtenerInicio();
-                       q.sacar();
-                       lis.insertar(nodoActual.getElem(), lis.longitud() + 1);
+                        nodoActual = (NodoGen) q.obtenerInicio();
+                        q.sacar();
+                        lis.insertar(nodoActual.getElem(), lis.longitud() + 1);
 
-                       if (nodoActual.getHijoIzquierdo() != null) {
-                           q.poner(nodoActual.getHijoIzquierdo());
-                       }
+                        if (nodoActual.getHijoIzquierdo() != null) {
+                            q.poner(nodoActual.getHijoIzquierdo());
+                        }
 
-                       if (nodoActual.getHijoIzquierdo() != null) {
-                           NodoGen hijo = nodoActual.getHijoIzquierdo().getHermanoDerecho();
-                           while (hijo != null) {
-                               q.poner(hijo);
-                               hijo = hijo.getHermanoDerecho();
-                           }
-                       }
+                        if (nodoActual.getHijoIzquierdo() != null) {
+                            NodoGen hijo = nodoActual.getHijoIzquierdo().getHermanoDerecho();
+                            while (hijo != null) {
+                                q.poner(hijo);
+                                hijo = hijo.getHermanoDerecho();
+                            }
+                        }
 
                    }
                }
@@ -278,7 +272,7 @@ public class ArbolGen {
             }
 
         private Object padrePaso(NodoGen raiz, Object elemento){
-            //
+            
             Object retorno = null;
             if(raiz != null){
                 NodoGen aux = raiz.getHijoIzquierdo();
@@ -377,13 +371,13 @@ public class ArbolGen {
             int aux = -1;
             int res = -1;
             if (nodo != null) {
-                NodoGen nuevo = nodo.getHijoIzquierdo();
-                while (nuevo != null) {
-                    aux = alturaAux(nuevo);
+                NodoGen hijo = nodo.getHijoIzquierdo();
+                while (hijo != null) {
+                    aux = alturaAux(hijo);
                     if (aux > res) {
                         res = aux;
                     }
-                    nuevo = nuevo.getHermanoDerecho();
+                    hijo = hijo.getHermanoDerecho();
                 }
                 res++;
             }
@@ -485,4 +479,262 @@ public class ArbolGen {
         return grado;
     }
   //-----------------------------------------------------------------------------------------------------------------------------------------------
+    public boolean verificarCamino(Lista lista){
+        boolean rta=false;
+        if(!this.esVacio()){
+            rta=verificarCaminoAux(raiz,lista);
+        }
+        return rta;
+    }
+      //-----------------------------------------------------------------------------------------------------------------------------------------------
+      private boolean verificarCaminoAux(NodoGen nodo,Lista ls) {
+        boolean correcto=false;
+        if(nodo!=null){
+            if(nodo.getElem().equals(ls.recuperar(1))){
+                //SI el nodo en el que estoy es parte del camino
+                ls.eliminar(1);
+                if(!ls.esVacia()){
+                    correcto=verificarCaminoAux(nodo.getHijoIzquierdo(),ls);
+                }
+            }else {
+                NodoGen hermano = nodo.getHermanoDerecho();
+                while(hermano!=null){
+                    if(hermano.getElem().equals(ls.recuperar(1))){
+                        correcto=verificarCaminoAux(hermano,ls);
+                    }
+                    hermano = hermano.getHermanoDerecho();
+                }
+            }
+            if(ls.esVacia()){
+                correcto=true;
+            }
+        }
+        return correcto;
+    }
+        //-----------------------------------------------------------------------------------------------------------------------------------------------
+      // FORMA RECURSIVA DE ROMI
+      public boolean verificarCaminoRomi(Lista ls){
+           boolean exito = false;
+           if(this.raiz != null){
+               exito = verificarCaminoAux(this.raiz, ls, 1);
+           }
+           return exito;
+       }
+
+       private boolean verificarCaminoAux(NodoGen n, Lista ls, int posActual){
+           boolean exito = false;
+           if(n!=null){
+               if(posActual == ls.longitud()){
+                    if(n.getElem().equals(ls.recuperar(posActual))){
+                       exito = true;
+                    }
+               }else{
+                   if(n.getElem().equals(ls.recuperar(posActual))){
+                        exito = verificarCaminoAux(n.getHijoIzquierdo(), ls,posActual+1);
+                    }else{
+                       exito = verificarCaminoAux(n.getHermanoDerecho(), ls,posActual);
+                    }
+               }
+           }
+           return exito;
+       }
+        //-----------------------------------------------------------------------------------------------------------------------------------------------
+           public boolean eliminar(Object buscado){
+        return eliminarAux(buscado,raiz.getHijoIzquierdo(),raiz);
+        }
+//     private boolean eliminarAux(Object buscado, NodoGen nodo, NodoGen padre) {
+//    boolean rta = false;
+//    if (nodo != null) {
+//        // Visita del nodo n
+//        if (nodo.getElem().equals(buscado)) {
+//            padre.setHijoIzquierdo(nodo.getHermanoDerecho());
+//            rta = true;
+//        } else {
+//            NodoGen hijo = nodo.getHijoIzquierdo();
+//            while (hijo != null && !rta) {
+//                rta = eliminarAux(buscado, hijo.getHijoIzquierdo(), hijo);
+//                hijo = hijo.getHermanoDerecho();
+//            }
+//        }
+//    }
+//    return rta;
+//}
+           private boolean eliminarAux(Object buscado, NodoGen nodo, NodoGen padre) {
+                boolean rta = false;
+                if (nodo != null) {
+                    // Visita del nodo n
+                    if (nodo.getElem().equals(buscado)) {
+                                if (padre == null) {
+                                        // Caso especial: eliminando la raíz del árbol
+                                        nodo = null;
+                                } else {
+                                        // Enlazar el hermano derecho del nodo actual con el nodo anterior
+                                        padre.setHijoIzquierdo(nodo.getHermanoDerecho());
+                                }
+                                        rta = true;
+                    } else {
+                                NodoGen hijo = nodo.getHijoIzquierdo();
+                                NodoGen hermanoAnterior = null;
+                                while (hijo != null && !rta) {
+                                        rta = eliminarAux(buscado, hijo, nodo);
+                                        if (!rta) {
+                                            hermanoAnterior = hijo;
+                                            hijo = hijo.getHermanoDerecho();
+                                        }
+                                }
+                                if (rta && hermanoAnterior != null) {
+                                    // Enlazar el hermano derecho del nodo eliminado con el nodo anterior
+                                    hermanoAnterior.setHermanoDerecho(hijo);
+                                }
+                    }
+                }
+                return rta;
+            }
+               //-----------------------------------------------------------------------------------------------------------------------------------------------
+            public Lista listarEntreNivelesInOrden(int niv1, int niv2){
+            Lista ls = new Lista();
+            return listarAuxInOrden(raiz,ls,niv1,niv2,0);
+              }
+           private Lista listarAuxInOrden(NodoGen nodo, Lista ls, int niv1, int niv2, int nivActual){
+               if(nodo!=null){
+                   if(nivActual<=niv2){
+                   if(nodo.getHijoIzquierdo()!=null){
+                       ls=listarAuxInOrden(nodo.getHijoIzquierdo(),ls,niv1,niv2,nivActual+1);
+                   }
+                   if(nivActual>=niv1){
+                       ls.insertar(nodo.getElem(),ls.longitud()+1);
+                   }
+                   if(nodo.getHijoIzquierdo()!=null){
+                       NodoGen hijo = nodo.getHijoIzquierdo().getHermanoDerecho();
+                       while (hijo!=null){
+                           ls=listarAuxInOrden(hijo,ls,niv1,niv2,nivActual+1);
+                           hijo=hijo.getHermanoDerecho();
+                       }
+                   }
+                }
+               }
+               return ls;
+           }
+            //-----------------------------------------------------------------------------------------------------------------------------
+        public Lista listarEntreNivelesPreOrden(int niv1,int niv2) {
+            Lista salida = new Lista();
+            listarEntreNivelesPreOrdenAux(raiz, salida,niv1,niv2,0);
+            return salida;
+        }
+
+         private void listarEntreNivelesPreOrdenAux(NodoGen nodo, Lista lis,int niv1,int niv2, int nivAct) {
+             if (nodo != null) {
+                 if(nivAct <=niv2){
+                 // VISTA DEL NODO nodo
+                 if(nivAct>=niv1)
+                 lis.insertar(nodo.getElem(), lis.longitud() + 1);
+
+                 // LLAMADOS RECURSIVOS CON LOS OTROS HIJOS DE nodo
+                 if (nodo.getHijoIzquierdo() != null) {
+                     NodoGen hijo = nodo.getHijoIzquierdo();
+                     while (hijo != null) {
+                         listarEntreNivelesPreOrdenAux(hijo, lis,niv1,niv2,nivAct+1);
+                         hijo = hijo.getHermanoDerecho();
+                     }
+                    }
+                 }
+             }
+         }
+              //----------------------------------------------------------------------------------------------------------------------------- 
+          public Lista listarEntreNivelesPosOrden(int niv1,int niv2){
+              Lista salida = new Lista();
+              listarEntreNivelesPosOrdenAux(this.raiz,salida,niv1,niv2,0);
+              return salida;
+          }
+        private void listarEntreNivelesPosOrdenAux(NodoGen nodo, Lista lis,int niv1,int niv2,int nivAct) {
+          if (nodo != null) {
+              if(nivAct<=niv2){
+              // LLAMADOS RECURSIVOS CON LOS OTROS HIJOS DE nodo
+              if (nodo.getHijoIzquierdo() != null) {
+                  NodoGen hijo = nodo.getHijoIzquierdo();
+                  while (hijo != null) {
+                      listarEntreNivelesPosOrdenAux(hijo, lis,niv1,niv2,nivAct+1);
+                      hijo = hijo.getHermanoDerecho();
+                  }
+              }
+              // VISTA DEL NODO nodo
+              if(nivAct>=niv1)
+              lis.insertar(nodo.getElem(), lis.longitud() + 1);
+          }
+          }
+      }
+          //----------------------------------------------------------------------------------------------------------------------------- 
+          public Lista listarHastaNivelPosOrden(int niv){
+              Lista salida = new Lista();
+              listarHastaNivelPosOrdenAux(this.raiz,salida,niv,0);
+              return salida;
+          }
+                private void listarHastaNivelPosOrdenAux(NodoGen nodo, Lista lis,int niv,int nivAct) {
+                  if (nodo != null) {
+                     if(nivAct<=niv){
+                      // LLAMADOS RECURSIVOS CON LOS OTROS HIJOS DE nodo
+                      if (nodo.getHijoIzquierdo() != null) {
+                          NodoGen hijo = nodo.getHijoIzquierdo();
+                          while (hijo != null) {
+                              listarHastaNivelPosOrdenAux(hijo, lis,niv,nivAct+1);
+                              hijo = hijo.getHermanoDerecho();
+                          }
+                      }
+
+                      // VISTA DEL NODO nodo
+                      lis.insertar(nodo.getElem(), lis.longitud() + 1);
+                    }
+                  }
+              }
+         //----------------------------------------------------------------------------------------------------------------------------- 
+        public Lista listarHastaNivelinOrden(int niv){
+            Lista ls = new Lista();
+            return listarHastaNivelinOrdenAux(raiz,ls,niv,0);
+              }
+           private Lista listarHastaNivelinOrdenAux(NodoGen nodo, Lista ls, int niv, int nivActual){
+               if(nodo!=null){
+                    if(nivActual<=niv){
+                      if(nodo.getHijoIzquierdo()!=null){
+                          ls=listarHastaNivelinOrdenAux(nodo.getHijoIzquierdo(),ls,niv,nivActual+1);
+                      }
+
+                          ls.insertar(nodo.getElem(),ls.longitud()+1);
+
+                      if(nodo.getHijoIzquierdo()!=null){
+                          NodoGen hijo = nodo.getHijoIzquierdo().getHermanoDerecho();
+                               while (hijo!=null){
+                                   ls=listarHastaNivelinOrdenAux(hijo,ls,niv,nivActual+1);
+                                   hijo=hijo.getHermanoDerecho();
+                               }
+                           }
+                       }
+               }
+               return ls;
+           }
+               //-----------------------------------------------------------------------------------------------------------------------------------------------
+             public Lista listarHastaNivPreorden(int niv) {
+            Lista salida = new Lista();
+            listarHastaNivPreordenAux(raiz, salida,niv,0);
+            return salida;
+        }
+
+       private void listarHastaNivPreordenAux(NodoGen nodo, Lista lis,int niv,int nivAct) {
+        if (nodo != null) {
+            if(nivAct<=niv){
+            // VISTA DEL NODO nodo
+            lis.insertar(nodo.getElem(), lis.longitud() + 1);
+
+            // LLAMADOS RECURSIVOS CON LOS OTROS HIJOS DE nodo
+            if (nodo.getHijoIzquierdo() != null) {
+                NodoGen hijo = nodo.getHijoIzquierdo();
+                while (hijo != null) {
+                    listarHastaNivPreordenAux(hijo, lis,niv,nivAct+1);
+                    hijo = hijo.getHermanoDerecho();
+                }
+              }
+            }
+        }
+    }
+
+
 }

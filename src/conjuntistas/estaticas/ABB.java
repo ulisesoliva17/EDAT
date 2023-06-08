@@ -170,4 +170,258 @@ public class ABB {
             listarAux(nodo.getDerecho(), lis);
             }
         }
+         //-----------------------------------------------------------------------------------------------------------------------------------------------
+     public boolean eliminar(Comparable elemento){
+        boolean resultado = true;
+        if(!(raiz==null)){
+            resultado = eliminarAux(this.raiz, null, elemento);
+        }else{
+            resultado = false;
+        }
+        return resultado;
+    }
+    
+    private boolean eliminarAux(NodoArbol n, NodoArbol padre, Comparable elemento){
+        boolean exito = false;
+        if(n != null){
+            if((elemento.compareTo(n.getElem())) == 0){
+                
+                if(n.getIzquierdo() == null && n.getDerecho() == null){
+                    //si n no tiene hijos
+                    noTieneHijos(padre, elemento);
+                    exito = true;
+                    
+                }else if((n.getIzquierdo() != null ^ n.getDerecho() != null)){
+                    //si n tiene UN hijo
+                    tieneUnHijo(n, padre, elemento);
+                    exito = true;
+                    
+                }else{
+                    // si n tiene ambos hijos
+                    tieneAmbos(n);
+                    exito = true;
+                 }
+                
+            }else{
+                if(elemento.compareTo(n.getElem())<0){
+                    eliminarAux(n.getIzquierdo(), n, elemento);
+                }
+                if(elemento.compareTo(n.getElem())>0){
+                    eliminarAux(n.getDerecho(), n, elemento);
+                }
+            }
+        }
+        return exito;
+    
+    }
+    
+    private void noTieneHijos(NodoArbol padre, Comparable elemento){
+        
+        //si no tiene hijos
+        if(padre == null){
+            //caso especial si el padre es nulo (raiz)
+            this.raiz = null;
+        }else{    
+            if(elemento.compareTo(padre.getIzquierdo().getElem()) == 0){
+                //si n es el HI de padre
+                padre.setIzquierdo(null);
+            }else{
+                //si n es HD de padre
+                padre.setDerecho(null);
+            }
+        }
+        
+    }
+    
+    private void tieneUnHijo(NodoArbol n, NodoArbol padre, Comparable elemento){
+        
+        if(n.getIzquierdo() != null){
+            //si n tiene HI
+            if(padre == null){
+                // caso especial si el padre es nulo
+                this.raiz.setIzquierdo(n.getIzquierdo());
+            }else{
+                if(elemento.compareTo(padre.getIzquierdo().getElem()) == 0){
+                     //si n es el HI de padre
+                    padre.setIzquierdo(n.getIzquierdo());
+                }else{
+                     //si n es el HD de padre
+                    padre.setDerecho(n.getIzquierdo());
+                }
+            }
+        }
+        if(n.getDerecho() != null){
+            //si n tiene HD
+            if(padre == null){
+                // caso especial si el padre es nulo
+                this.raiz.setDerecho(n.getDerecho());
+            }else{
+                if(elemento.compareTo(padre.getIzquierdo().getElem()) == 0){
+                    //si n es el HI de padre
+                    padre.setIzquierdo(n.getDerecho());
+                }else{
+                    //si n es el HD de padre
+                    padre.setDerecho(n.getDerecho());
+                }
+            }
+        }
+        
+    }
+    
+    private void tieneAmbos(NodoArbol n){
+        
+        // si n tiene AMBOS hijos
+        NodoArbol aux = n.getIzquierdo(); //tambien podria ser derecho
+        if(aux.getDerecho()!=null){
+            //si HI del nodo a eliminar tiene descendientes
+            while(aux.getDerecho().getDerecho()!=null){ //seria izquierdo si antes optabamos por derecho
+                aux = aux.getDerecho();
+            } 
+            n.setElemento(aux.getDerecho().getElem()); //seteo el elemento del candidato a n
+            if(aux.getDerecho().getIzquierdo()!=null){
+                // si el candidato tiene HI
+                aux.setDerecho(aux.getDerecho().getIzquierdo());
+            }else{
+                // si el candidato no tiene HI
+                aux.setDerecho(null);
+
+            }
+        }else{
+            //si HI del nodo a eliminar es el candidato
+            n.setElemento(aux.getElem());
+            //como candidato no tiene HD
+            //si no tuviera HI, de igual manera se setea a nulo          
+            n.setIzquierdo(aux.getIzquierdo());
+
+        }
+        
+    }
+//    public boolean eliminarMinimo(){
+//        boolean rta=false;
+//        if(raiz!=null){
+//        rta=eliminarMinimoAux(raiz);
+//        }
+//        return rta;
+//    }
+   //-----------------------------------------------------------------------------------------------------------------------------------------------
+//    private boolean eliminarMinimoAux(NodoArbol nodo){
+//        boolean rta=false;
+//        if(nodo.getIzquierdo()!=null){
+//        while(nodo.getIzquierdo().getIzquierdo()!=null){
+//                nodo=nodo.getIzquierdo();
+//            }
+//            nodo.setIzquierdo(nodo.getIzquierdo().getDerecho());
+//            rta=true;
+//        }else{
+//            raiz=null;
+//        }
+//        return rta;
+//    }
+     //-----------------------------------------------------------------------------------------------------------------------------------------------
+  private NodoArbol obtenerRaiz(NodoArbol n, Comparable elemento){
+        NodoArbol resultado = null;
+        if(n!=null){
+            if(elemento.compareTo(n.getElem()) == 0){
+                resultado = n;
+            }else if(elemento.compareTo(n.getElem()) < 0){
+                resultado = obtenerRaiz(n.getIzquierdo(), elemento);
+
+            }else{
+                resultado = obtenerRaiz(n.getDerecho(), elemento);
+            }
+        }
+        return resultado;
+    }
+    //-----------------------------------------------------------------------------------------------------------------------------------------------
+      public ABB clonarParteInvertida(Comparable elem){
+        ABB elClon = new ABB();
+        if(this.raiz!=null){
+            NodoArbol raizNueva = obtenerRaiz(this.raiz, elem);
+            elClon.raiz = new NodoArbol(raizNueva.getElem(), null, null);
+            auxClone(raizNueva, elClon.raiz);
+        }
+        return elClon;
+    }
+     //-----------------------------------------------------------------------------------------------------------------------------------------------
+      
+      private void auxClone(NodoArbol raizO,NodoArbol copia){
+          if(raizO!=null){
+             
+              if (raizO.getIzquierdo()!= null) {
+                //copia.setIzquierdo(new NodoArbol(raizO.getIzquierdo().getElem(),null,null));
+                copia.setDerecho(new NodoArbol(raizO.getIzquierdo().getElem(),null,null));
+              }
+           if (raizO.getDerecho()!= null) {
+               //copia.setDerecho(new NodoArbol(raizO.getDerecho().getElem(),null,null));
+               copia.setIzquierdo(new NodoArbol(raizO.getDerecho().getElem(),null,null));
+              }
+           
+             //Hace el llamado recursivo pero con los dos hijos izquierdo, del original y de la copia
+             //los cuales ya son distintos de nulos.
+             auxClone(raizO.getIzquierdo(),copia.getDerecho());
+             auxClone(raizO.getDerecho(),copia.getIzquierdo());
+             
+          }
+      }
+           //-----------------------------------------------------------------------------------------------------------------------------------------------
+      public void eliminarMinimo(){
+          eliminarMinimoAux(raiz);
+      }
+      
+      private void eliminarMinimoAux(NodoArbol nodo){
+          if(nodo!=null){
+              while(nodo.getIzquierdo().getIzquierdo()!=null){
+                  nodo=nodo.getIzquierdo();
+              }
+              if(nodo.getIzquierdo().getIzquierdo()==null){
+                  nodo.setIzquierdo(nodo.getIzquierdo().getDerecho());
+              }
+          }
+      }
+  //-----------------------------------------------------------------------------------------------------------------------------------------------
+       public Lista listarRango(Comparable min, Comparable max) {
+        Lista ls = new Lista();
+        if (raiz!=null) {
+            listarRangoAux(this.raiz,min,max, ls);
+        }
+        return ls;
+    }
+    private void listarRangoAux(NodoArbol nodo,Comparable minimo, Comparable maximo, Lista lista) {
+        if (nodo != null) {
+            Comparable elemento = (Comparable) nodo.getElem();
+            if (elemento.compareTo(maximo) < 0) {
+                listarRangoAux(nodo.getDerecho(), minimo, maximo, lista);
+                System.out.println(elemento.compareTo(maximo) < 0);
+            }
+            if (elemento.compareTo(minimo) >= 0 && elemento.compareTo(maximo) <= 0) {
+                lista.insertar(elemento, 1);
+            }
+            if (elemento.compareTo(minimo) > 0) {
+                listarRangoAux(nodo.getIzquierdo(), minimo, maximo, lista);
+            }
+        }
+
+    }
+      //-----------------------------------------------------------------------------------------------------------------------------------------------
+   public Lista listarMayorIgual(Comparable elem) {
+        Lista ls = new Lista();
+        if (raiz != null) {
+            listarMayorAux(raiz, elem, ls);
+        }
+        return ls;
+    }
+    private void listarMayorAux(NodoArbol n, Comparable elem, Lista ls) {
+        if (n != null) {
+            listarMayorAux(n.getDerecho(), elem, ls);
+            if (elem.compareTo(n.getElem()) <= 0) {
+                ls.insertar(n.getElem(), ls.longitud()+1);
+            }
+            if (elem.compareTo(n.getElem()) < 0) {
+                listarMayorAux(n.getIzquierdo(), elem, ls);
+            }
+        }
+    }
+      
 }
+
+
