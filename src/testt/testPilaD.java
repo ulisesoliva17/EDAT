@@ -15,8 +15,7 @@ public class testPilaD {
                 pila.apilar(9);
                 pila.apilar(1);
                 System.out.println(pila.toString());
-                pila.desapilar();
-                System.out.println(pila.toString());
-                System.out.println(pila.clonar().toString());
+                Pila Clon =pila.clonar(); 
+                System.out.println(Clon.toString());
     }
 }

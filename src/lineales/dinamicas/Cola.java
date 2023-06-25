@@ -75,23 +75,6 @@ import lineales.dinamicas.Nodo;
             }
             return resultado;
         }
-        //----------------------------------------------------------------------------------------------------------------------------------------
-       
-        public void mostrarCola(){
-            Nodo recorrido=frente;
-            String colaInvertida="";
-            String cola="";
-                while(recorrido!=null){
-                    cola+=recorrido.informacion+" ";
-                    recorrido= recorrido.enlace;
-                }
-            String cadena[]= cola.split(" ");
-                for(int i=0; i<=cadena.length-1; i++){
-                    colaInvertida+= " "+ cadena[i];
-                }
-            JOptionPane.showMessageDialog(null, colaInvertida);
-            cola="";
-        }
          //----------------------------------------------------------------------------------------------------------------------------------------
         
         public String toString() {

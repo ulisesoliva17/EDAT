@@ -457,6 +457,7 @@ public class ArbolGen {
                         gradoMayor = gradoHijo;
                     }
                     hijo = hijo.getHermanoDerecho();
+                    
 
                 }
                 if (gradoActual > gradoMayor) {

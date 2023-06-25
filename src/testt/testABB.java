@@ -12,11 +12,9 @@ public class testABB {
         arbol.insertar(10);
         arbol.insertar(5);
         arbol.insertar(20);
-        arbol.insertar(3);
         arbol.insertar(7);
         arbol.insertar(15);
         arbol.insertar(25);
-         arbol.insertar(2);
          System.out.println(arbol.toString());
         arbol.eliminarMinimo();
         System.out.println(arbol.toString());
