@@ -115,7 +115,7 @@ import lineales.dinamicas.Nodo;
            
            while(puntero!=null){
                if(puntero.getInformacion().equals("{") ||puntero.getInformacion().equals("[")||puntero.getInformacion().equals("(") ){
-                   p1.apilar(puntero.getInformacion());
+                   p1.apilar(puntero.getInformacion()); 
                }
                
                if(puntero.getInformacion().equals("}")){

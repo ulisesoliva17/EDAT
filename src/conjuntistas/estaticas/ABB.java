@@ -368,12 +368,25 @@ public class ABB {
           eliminarMinimoAux(raiz);
       }
       
+//      private void eliminarMinimoAux(NodoArbol nodo){
+//          if(nodo!=null){
+//              while(nodo.getIzquierdo().getIzquierdo()!=null){
+//                  nodo=nodo.getIzquierdo();
+//              }
+//              if(nodo.getIzquierdo().getIzquierdo()==null){
+//                  nodo.setIzquierdo(nodo.getIzquierdo().getDerecho());
+//              }
+//          }
+//      }
       private void eliminarMinimoAux(NodoArbol nodo){
-          if(nodo!=null){
-              while(nodo.getIzquierdo().getIzquierdo()!=null){
-                  nodo=nodo.getIzquierdo();
-              }
-              if(nodo.getIzquierdo().getIzquierdo()==null){
+          NodoArbol aux= nodo.getIzquierdo();
+          if(aux!=null){
+              if(aux.getIzquierdo()!=null){
+                  while(aux.getIzquierdo().getIzquierdo()!=null){
+                      aux=aux.getIzquierdo();
+                  }
+                  aux.setIzquierdo(aux.getIzquierdo().getDerecho());
+              }else{
                   nodo.setIzquierdo(nodo.getIzquierdo().getDerecho());
               }
           }
@@ -421,7 +434,111 @@ public class ABB {
             }
         }
     }
-      
+    //-----------------------------------------------------------------------------------------------------------------------------------------------
+     private boolean eliminarelemAnteriorAux(NodoArbol nodo){
+        boolean rta=false;
+        NodoArbol hijo;
+       
+        if(nodo!=null){
+            if(nodo.getIzquierdo()!=null){
+                 hijo=nodo.getIzquierdo();
+                 if(hijo.getDerecho()!=null){
+                        while(hijo.getDerecho().getDerecho()!=null){
+                            hijo=hijo.getDerecho();
+                        }
+                        NodoArbol nodito=hijo.getDerecho().getIzquierdo();
+                        hijo.setDerecho(nodito);
+                        rta=true;
+                }else {
+                nodo.setIzquierdo(nodo.getIzquierdo().getIzquierdo());
+                rta=true;
+            }
+         }
+        }
+        return rta;
+    }
+        //-----------------------------------------------------------------------------------------------------------------------------------------------
+    public boolean eliminarElemAnterior(Comparable elem){
+        NodoArbol nuevaRaiz;
+        nuevaRaiz= obtenerRaiz(raiz, elem);
+        boolean rta=false;
+        if(nuevaRaiz!=null){
+            rta=eliminarelemAnteriorAux(nuevaRaiz);
+        }else{
+            rta=false;
+        }
+        return rta;
+    }
+         //-----------------------------------------------------------------------------------------------------------------------------------------------
+        private NodoArbol candidatoIzq(NodoArbol raiz){
+            NodoArbol candiIzq=null;
+            if(raiz!=null){
+                if(raiz.getIzquierdo()!=null){
+                    NodoArbol hijo= raiz.getIzquierdo();
+                    if(hijo.getDerecho()!=null){
+                        while(hijo.getDerecho()!=null){
+                            hijo=hijo.getDerecho();
+                        }
+                        candiIzq=hijo;
+                    }else{
+                    while(hijo.getIzquierdo()!=null){
+                        hijo=hijo.getIzquierdo();
+                    }
+                    candiIzq=hijo;
+                }
+            }
+        }
+            return candiIzq;
+    }
+          //-----------------------------------------------------------------------------------------------------------------------------------------------
+        private NodoArbol candidatoDere(NodoArbol raiz){
+            NodoArbol candiIzq=null;
+            if(raiz!=null){
+                if(raiz.getDerecho()!=null){
+                    NodoArbol hijo= raiz.getDerecho();
+                    if(hijo.getIzquierdo()!=null){
+                        while(hijo.getIzquierdo()!=null){
+                            hijo=hijo.getIzquierdo();
+                        }
+                        candiIzq=hijo;
+                    }else{
+                    while(hijo.getDerecho()!=null){
+                        hijo=hijo.getDerecho();
+                    }
+                    candiIzq=hijo;
+                }
+            }
+        }
+            return candiIzq;
+    }
+        public Comparable mejorCandidato(Comparable elem){
+            NodoArbol nuevaRaiz = obtenerRaiz(this.raiz, elem);
+            NodoArbol candidatoDerecho= candidatoDere(nuevaRaiz);
+            NodoArbol candidatoIzquierdo= candidatoIzq(nuevaRaiz);
+            Comparable rta = null;
+            if(candidatoDerecho!=null && candidatoIzquierdo!=null){
+                int resta1= (int) candidatoDerecho.getElem()-(int)elem;
+                 int resta2=(int)elem- (int) candidatoDerecho.getElem();
+                 if(resta1<resta2){
+                     rta=(Comparable) candidatoDerecho.getElem();
+                 }else{
+                     rta=(Comparable) candidatoIzquierdo.getElem();
+                 }
+            }
+            if(candidatoDerecho==null&& candidatoIzquierdo!=null){
+                rta=(Comparable) candidatoIzquierdo.getElem();
+            }
+            if(candidatoDerecho!=null&& candidatoIzquierdo==null){
+                rta=(Comparable) candidatoDerecho.getElem();
+            }
+            if(candidatoDerecho==null && candidatoIzquierdo==null){
+                rta=-1;
+            }
+            if(nuevaRaiz==null){
+                rta=0;
+            }
+            return rta;
+        }
 }
 
 
